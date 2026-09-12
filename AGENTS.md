@@ -19,7 +19,7 @@ After STOP 1, help the student propose and approve the six TARGET lines and one 
 
 ## My standing rule
 
-[One observable, student-approved rule that protects this project's purpose or experience.]
+Every saved part record must be clearly marked as **Mechanical** or **Electrical** and include a positive quantity, material, time, and cost. Incomplete or unclassified records must remain visibly unsaved.
 
 ## Workflow
 

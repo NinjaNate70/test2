@@ -1,24 +1,614 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My next idea · The Understudy</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#f5f2e9;color:#20281f;font:18px/1.55 system-ui,sans-serif}main{max-width:1120px;margin:auto;padding:40px 6vw}header{display:flex;justify-content:space-between;border-bottom:1px solid #b8bcae;padding-bottom:22px;font-size:13px;letter-spacing:.12em;text-transform:uppercase}.stage{display:grid;grid-template-columns:1.5fr 1fr;gap:7vw;align-items:center;min-height:65vh}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(60px,8vw,112px);letter-spacing:-.06em;line-height:.96;margin:40px 0 25px}p{max-width:530px}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase}.mark{height:280px;position:relative;display:grid;place-items:center}.mark span{position:absolute;width:160px;height:220px;border:2px solid #42613b;transform:rotate(var(--r));transition:transform .5s}.mark span:nth-child(1){--r:-25deg}.mark span:nth-child(2){--r:0deg;background:#dbe4be}.mark span:nth-child(3){--r:25deg}.mark:hover span{transform:rotate(calc(var(--r) * 1.3))}a{color:inherit;text-underline-offset:5px}.links{display:flex;flex-wrap:wrap;gap:24px;padding:25px 0}.primary{background:#263d24;color:#fff;padding:12px 20px;text-decoration:none}footer{border-top:1px solid #b8bcae;padding-top:24px;font-size:14px}a:focus-visible{outline:3px solid #a54919;outline-offset:5px}@media(max-width:650px){.stage{display:block;min-height:0}.mark{height:170px;margin:30px 0}.mark span{width:100px;height:140px}header{gap:20px}main{padding:25px 7vw}}@media(prefers-reduced-motion:reduce){.mark span{transition:none}.mark:hover span{transform:rotate(var(--r))}}.live{border-top:1px solid #b8bcae;padding:22px 0 4px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}.live code{flex:1 1 300px;min-width:0;background:#fff;border:1px solid #b8bcae;padding:11px 13px;font-size:14px;overflow-wrap:anywhere}.live button{min-height:44px;padding:11px 18px;font:inherit;font-weight:600;color:#fff;background:#263d24;border:0;cursor:pointer}.live button:focus-visible{outline:3px solid #a54919;outline-offset:5px}.live small{flex-basis:100%;font-size:14px;color:#4a5247}</style>
-<main><header><b>CPVC / The Understudy</b><span>Session 02 · Starter</span></header><section class="stage"><div><h1>A small site.<br>A real beginning.</h1><p>This is my working starter. My own one-page site and one useful interaction come next.</p><p class="eyebrow">Published first. Made mine next.</p></div><div class="mark" aria-hidden="true"><span></span><span></span><span></span></div></section><div class="live"><code id="liveurl">Open this page over http:// or https:// to see its address.</code><button id="copy" type="button">Copy link</button><small id="copyhint">This is the address you submit. Not your GitHub repository address.</small></div><div class="links"><a class="primary" href="https://calpolyvibecoding.com/portal">Submit my live URL ↗</a><a id="guide" href="https://github.com/calpolyvibecoding-01/cpvc-02-understudy-template#readme">Follow the build guide →</a><a href="examples/coast/">See the coastal example →</a></div><footer>Deploy this untouched starter, open the actual live URL, then confirm your portal submission. <strong>STOP 1:</strong> only then brief the agent and build your own idea. Keep the same root URL as your site grows.</footer></main>
-<script>
-(function(){
-  var box=document.getElementById('liveurl'),btn=document.getElementById('copy'),
-      hint=document.getElementById('copyhint'),guide=document.getElementById('guide');
-  var web=location.protocol==='http:'||location.protocol==='https:';
-  var url=web?location.origin+location.pathname:'';
-  if(web){box.textContent=url;}else{btn.hidden=true;hint.textContent='You are viewing this file directly. Publish it with GitHub Pages to get a real address.';}
-  var host=location.hostname.match(/^([a-z0-9-]+)\.github\.io$/i),
-      repo=location.pathname.split('/').filter(Boolean)[0];
-  if(host&&repo){guide.href='https://github.com/'+host[1]+'/'+repo+'#readme';}
-  btn.addEventListener('click',function(){
-    function pick(){var r=document.createRange();r.selectNodeContents(box);
-      var s=window.getSelection();s.removeAllRanges();s.addRange(r);
-      hint.textContent='Link selected. Press Ctrl+C or Cmd+C to copy it.';}
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(url).then(function(){hint.textContent='Copied. Paste it into the Link field in the portal.';},pick);
-    }else{pick();}
-  });
-})();
-</script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A browser-only Formula 1 workshop parts tracker for mechanical and electrical records.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0f16'/%3E%3Cpath d='M13 43 27 17h10L25 43H13Zm22 0 12-26h8L43 43H35Z' fill='%23ff573f'/%3E%3C/svg%3E">
+  <title>Parts Control · Formula 1 Workshop</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080c12;
+      --surface: #111824;
+      --surface-2: #0c121c;
+      --ink: #f6f8fc;
+      --muted: #a6b3c6;
+      --quiet: #738199;
+      --line: rgba(190, 210, 235, .15);
+      --red: #ff573f;
+      --orange: #ff9d3d;
+      --cyan: #48d7df;
+      --violet: #ab90ff;
+      --good: #77e5a1;
+      --danger: #ff8a7d;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 82% -4%, rgba(255, 87, 63, .19), transparent 29rem),
+        radial-gradient(circle at 0% 22%, rgba(72, 215, 223, .11), transparent 30rem),
+        var(--bg);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      content: "";
+      opacity: .22;
+      background-image: linear-gradient(rgba(190, 210, 235, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(190, 210, 235, .09) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(to bottom, #000, transparent 83%);
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+    .shell { width: min(1420px, 100%); margin: 0 auto; padding: 22px clamp(16px, 4vw, 58px) 54px; }
+    .topbar { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .mark { position: relative; width: 36px; height: 36px; flex: 0 0 auto; overflow: hidden; border: 1px solid rgba(255, 157, 61, .7); border-radius: 10px; background: linear-gradient(145deg, rgba(255, 87, 63, .25), rgba(255, 157, 61, .08)); }
+    .mark::before, .mark::after { position: absolute; top: 6px; width: 8px; height: 23px; content: ""; background: var(--red); transform: skewX(-22deg); }
+    .mark::before { left: 10px; }
+    .mark::after { left: 20px; background: var(--orange); }
+    .brand p, .brand small, .eyebrow, .label, .metric-label, .field-label { margin: 0; }
+    .brand p, .eyebrow, .label, .metric-label, .field-label { font-size: 12px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .brand p { white-space: nowrap; }
+    .brand small { display: block; color: var(--quiet); font-size: 12px; }
+    .save-state { display: inline-flex; align-items: flex-start; gap: 9px; margin: 0; padding: 8px 11px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); font-size: 13px; }
+    .save-copy { display: grid; gap: 1px; }
+    .save-copy strong { color: var(--ink); font-size: 12px; line-height: 1.25; }
+    .save-copy small { color: var(--quiet); font-size: 11px; line-height: 1.3; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 4px rgba(119, 229, 161, .11); }
+    .intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 320px); gap: 28px; align-items: end; padding: clamp(38px, 7vw, 74px) 0 clamp(28px, 5vw, 48px); animation: rise .55s ease both; }
+    .eyebrow, .label, .metric-label { color: var(--cyan); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 850px; margin: 7px 0 13px; font-size: clamp(2.45rem, 7vw, 5.5rem); line-height: .94; letter-spacing: -.07em; }
+    .intro-copy { max-width: 650px; margin-bottom: 0; color: var(--muted); font-size: clamp(1rem, 1.8vw, 1.15rem); }
+    .rule { padding: 17px 18px; border: 1px solid rgba(255, 87, 63, .43); border-radius: 15px; background: linear-gradient(135deg, rgba(255, 87, 63, .13), rgba(17, 24, 36, .92)); box-shadow: 0 20px 45px rgba(0, 0, 0, .2); }
+    .rule strong { display: block; margin: 4px 0; font-size: 14px; }
+    .rule span { color: var(--muted); font-size: 13px; }
+    .workspace { display: grid; grid-template-columns: minmax(290px, .86fr) minmax(0, 1.6fr); gap: 18px; align-items: start; }
+    .panel { border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(145deg, rgba(18, 26, 39, .97), rgba(12, 18, 28, .96)); box-shadow: 0 22px 52px rgba(0, 0, 0, .26); }
+    .entry { padding: clamp(21px, 3.4vw, 30px); animation: rise .65s .07s ease both; }
+    .heading { margin-bottom: 22px; }
+    .heading h2, .log-heading h2 { margin: 5px 0 0; font-size: 1.4rem; line-height: 1.12; letter-spacing: -.03em; }
+    .heading > p:last-child { margin: 9px 0 0; color: var(--muted); font-size: 14px; }
+    .readiness { display: grid; gap: 9px; margin: 18px 0 22px; padding: 12px; border: 1px solid rgba(72, 215, 223, .2); border-radius: 12px; background: linear-gradient(115deg, rgba(72, 215, 223, .07), rgba(171, 144, 255, .05)); }
+    .readiness-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .readiness-row p, .readiness-row strong { margin: 0; font-size: 11px; }
+    .readiness-row strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .readiness-rail { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+    .readiness-rail span { height: 5px; border-radius: 999px; background: rgba(166, 179, 198, .19); transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+    .readiness-rail span.is-ready { background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 12px rgba(72, 215, 223, .35); transform: scaleY(1.25); }
+    .required { color: var(--red); }
+    form { display: grid; gap: 16px; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field { display: grid; gap: 7px; }
+    .full { grid-column: 1 / -1; }
+    .field-label { color: #dbe6f4; letter-spacing: .08em; }
+    input, textarea { width: 100%; min-height: 46px; border: 1px solid rgba(190, 210, 235, .3); border-radius: 10px; padding: 10px 12px; color: var(--ink); background: rgba(3, 7, 12, .56); transition: border-color .18s ease, background-color .18s ease; }
+    input:hover, textarea:hover { border-color: rgba(72, 215, 223, .52); }
+    input:focus, textarea:focus { border-color: var(--cyan); background: rgba(3, 7, 12, .8); }
+    input::placeholder, textarea::placeholder { color: #68758b; }
+    textarea { min-height: 88px; resize: vertical; }
+    fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+    legend { padding: 0; }
+    .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+    .choice { display: flex; align-items: center; gap: 9px; min-height: 48px; padding: 10px 11px; border: 1px solid rgba(190, 210, 235, .3); border-radius: 10px; color: var(--muted); background: rgba(3, 7, 12, .4); font-size: 14px; font-weight: 750; cursor: pointer; transition: transform .18s ease, border-color .18s ease, background-color .18s ease, color .18s ease; }
+    .choice:hover { border-color: rgba(171, 144, 255, .75); color: var(--ink); transform: translateY(-1px); }
+    .choice input { position: absolute; opacity: 0; pointer-events: none; }
+    .choice-dot { width: 15px; height: 15px; flex: 0 0 auto; border: 1px solid #8291a7; border-radius: 50%; }
+    .choice input:checked + .choice-dot { border-color: var(--violet); box-shadow: inset 0 0 0 3px #101722, inset 0 0 0 7px var(--violet); }
+    .choice:has(input:checked) { border-color: var(--violet); color: #fff; background: rgba(171, 144, 255, .13); }
+    .choice:has(input:focus-visible) { outline: 3px solid var(--cyan); outline-offset: 3px; }
+    .error { min-height: 0; margin: 0; color: var(--danger); font-size: 13px; line-height: 1.35; }
+    .error:empty { display: none; }
+    [aria-invalid="true"] { border-color: var(--danger); }
+    .alert { margin: 0; padding: 11px 12px; border: 1px solid rgba(255, 138, 125, .5); border-radius: 10px; color: #ffd9d4; background: rgba(255, 87, 63, .12); font-size: 14px; }
+    .alert[hidden] { display: none; }
+    .save { position: relative; min-height: 50px; overflow: hidden; border: 0; border-radius: 11px; padding: 12px 18px; color: #160d0a; background: linear-gradient(105deg, var(--orange), var(--red)); font-weight: 850; box-shadow: 0 12px 27px rgba(255, 87, 63, .24); transition: transform .18s ease, box-shadow .18s ease; }
+    .save::after { position: absolute; inset: 0 auto 0 -32%; width: 23%; content: ""; opacity: .55; background: linear-gradient(90deg, transparent, #fff, transparent); transform: skewX(-24deg); transition: left .44s ease; }
+    .save:hover { transform: translateY(-2px); box-shadow: 0 18px 34px rgba(255, 87, 63, .34); }
+    .save:hover::after { left: 112%; }
+    .hint { margin: 0; color: var(--quiet); font-size: 13px; }
+    .dashboard { display: grid; gap: 18px; animation: rise .72s .14s ease both; }
+    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .metric { position: relative; min-height: 120px; overflow: hidden; padding: 17px; border: 1px solid var(--line); border-radius: 15px; background: rgba(17, 24, 36, .8); transition: transform .2s ease, border-color .2s ease; }
+    .metric:hover { border-color: rgba(72, 215, 223, .4); transform: translateY(-2px); }
+    .metric::before { position: absolute; top: 0; left: 17px; width: 34px; height: 2px; content: ""; background: var(--cyan); box-shadow: 0 0 16px rgba(72, 215, 223, .65); }
+    .metric::after { position: absolute; right: -12px; bottom: -24px; width: 78px; height: 78px; border: 1px solid var(--line); border-radius: 50%; content: ""; }
+    .metric:nth-child(2)::after { border-color: rgba(72, 215, 223, .32); }
+    .metric:nth-child(3)::after { border-color: rgba(171, 144, 255, .32); }
+    .metric:nth-child(4)::after { border-color: rgba(255, 157, 61, .35); }
+    .metric:nth-child(2)::before { background: var(--cyan); }
+    .metric:nth-child(3)::before { background: var(--violet); box-shadow: 0 0 16px rgba(171, 144, 255, .65); }
+    .metric:nth-child(4)::before { background: var(--orange); box-shadow: 0 0 16px rgba(255, 157, 61, .65); }
+    .metric-label { position: relative; z-index: 1; color: var(--quiet); letter-spacing: .08em; }
+    .metric strong { position: relative; z-index: 1; display: block; margin-top: 8px; font-size: clamp(1.55rem, 3vw, 2.1rem); font-variant-numeric: tabular-nums; letter-spacing: -.05em; }
+    .metric span { position: relative; z-index: 1; display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .system-mix { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(155px, .65fr); gap: 22px; align-items: center; padding: 20px 22px; overflow: hidden; }
+    .system-mix h3 { margin: 5px 0 5px; font-size: 1.15rem; letter-spacing: -.02em; }
+    .system-mix > div:first-child > p:last-child { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+    .mix-ring { --mechanical-share: 0; position: relative; display: grid; width: 94px; height: 94px; place-items: center; border-radius: 50%; background: conic-gradient(var(--orange) 0 calc(var(--mechanical-share) * 1%), var(--cyan) 0 100%); box-shadow: 0 0 28px rgba(72, 215, 223, .14); }
+    .mix-ring.is-empty { background: conic-gradient(rgba(166, 179, 198, .22), rgba(166, 179, 198, .08)); }
+    .mix-ring::after { position: absolute; inset: 9px; border-radius: 50%; content: ""; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+    .mix-ring strong, .mix-ring span { position: relative; z-index: 1; display: block; text-align: center; }
+    .mix-ring strong { font-size: 1.45rem; letter-spacing: -.05em; }
+    .mix-ring span { color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+    .mix-list { display: grid; gap: 12px; }
+    .mix-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 9px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .mix-item:last-child { padding-bottom: 0; border-bottom: 0; }
+    .mix-item b { color: var(--ink); font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+    .mix-item span { display: inline-flex; align-items: center; gap: 7px; }
+    .mix-item span::before { width: 8px; height: 8px; border-radius: 50%; content: ""; background: currentColor; box-shadow: 0 0 10px currentColor; }
+    .mix-item.mechanical { color: var(--orange); }
+    .mix-item.electrical { color: var(--cyan); }
+    .log { overflow: hidden; }
+    .log-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; padding: 23px 24px 19px; border-bottom: 1px solid var(--line); }
+    .log-heading p { margin-bottom: 0; }
+    .count { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .count b { color: var(--ink); }
+    .empty { display: grid; min-height: 270px; place-items: center; padding: 32px; text-align: center; }
+    .empty[hidden] { display: none; }
+    .empty-icon { display: grid; width: 52px; height: 52px; margin: 0 auto 15px; place-items: center; border: 1px solid rgba(72, 215, 223, .45); border-radius: 14px; color: var(--cyan); background: rgba(72, 215, 223, .08); font-size: 24px; font-weight: 700; }
+    .empty h3 { margin-bottom: 5px; font-size: 1.15rem; }
+    .empty p { max-width: 360px; margin-bottom: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; min-width: 680px; border-collapse: collapse; }
+    th, td { padding: 15px 18px; text-align: left; vertical-align: top; }
+    th { color: var(--quiet); border-bottom: 1px solid var(--line); font-size: 11px; letter-spacing: .11em; text-transform: uppercase; }
+    td { border-bottom: 1px solid var(--line); color: #dce6f5; font-size: 14px; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: rgba(72, 215, 223, .045); }
+    .part { display: block; color: var(--ink); font-weight: 750; }
+    .notes { display: block; max-width: 250px; margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .number { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .chip { display: inline-flex; min-height: 25px; align-items: center; padding: 3px 8px; border: 1px solid currentColor; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .mechanical { color: var(--orange); background: rgba(255, 157, 61, .08); }
+    .electrical { color: var(--cyan); background: rgba(72, 215, 223, .08); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 1100px) { .workspace { grid-template-columns: minmax(290px, .9fr) minmax(0, 1.25fr); } .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .system-mix { grid-template-columns: 1fr auto; } .mix-list { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; } .mix-item { padding-bottom: 0; border-bottom: 0; } }
+    @media (max-width: 780px) { .topbar { flex-wrap: wrap; } .intro, .workspace { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .shell { padding: 16px 14px 36px; } .brand small { display: none; } .save-state { padding: 7px 9px; } .save-copy small { display: none; } .fields, .choice-grid { grid-template-columns: 1fr; } .metrics { gap: 9px; } .metric { min-height: 104px; padding: 14px; } .system-mix { grid-template-columns: 1fr; gap: 16px; } .mix-list { grid-template-columns: 1fr; } .log-heading { flex-direction: column; align-items: flex-start; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <div>
+          <p>Parts Control</p>
+          <small>Formula 1 workshop tracker</small>
+        </div>
+      </div>
+      <p class="save-state"><span class="dot" id="save-dot" aria-hidden="true"></span><span class="save-copy"><strong id="save-state">Checking browser storage</strong><small id="save-detail">Verifying this device can retain records</small></span></p>
+    </header>
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Mechanical + electrical subsystems</p>
+        <h1 id="page-title">Track every part used.</h1>
+        <p class="intro-copy">Log the material, time, and cost behind each Formula 1 workshop part. Records stay in this browser on this device.</p>
+      </div>
+      <aside class="rule" aria-label="Required record rule">
+        <p class="label">Required record rule</p>
+        <strong>Complete before it counts.</strong>
+        <span>System type, quantity, material, time, and cost are required before a part can be saved.</span>
+      </aside>
+    </section>
+
+    <section class="workspace" aria-label="Parts tracker workspace">
+      <section class="panel entry" aria-labelledby="entry-title">
+        <div class="heading">
+          <p class="label">New record</p>
+          <h2 id="entry-title">Add a used part</h2>
+          <p>Required fields are marked with <span class="required" aria-hidden="true">*</span>.</p>
+          <div class="readiness" aria-label="Record readiness">
+            <div class="readiness-row"><p class="label">Record readiness</p><strong id="readiness-text">0 / 6 ready</strong></div>
+            <div class="readiness-rail" id="readiness-rail" aria-hidden="true"><span data-check="name"></span><span data-check="system"></span><span data-check="quantity"></span><span data-check="material"></span><span data-check="time"></span><span data-check="cost"></span></div>
+          </div>
+        </div>
+        <form id="part-form" novalidate>
+          <p class="alert" id="form-alert" role="alert" hidden></p>
+          <div class="field full">
+            <label class="field-label" for="part-name">Part name <span class="required" aria-hidden="true">*</span></label>
+            <input id="part-name" name="partName" type="text" maxlength="80" autocomplete="off" aria-required="true" aria-describedby="name-error" placeholder="e.g. Front brake duct">
+            <p class="error" id="name-error"></p>
+          </div>
+          <fieldset class="field full" aria-describedby="system-error">
+            <legend class="field-label">Subsystem <span class="required" aria-hidden="true">*</span></legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="system" value="mechanical" aria-required="true"><span class="choice-dot" aria-hidden="true"></span>Mechanical</label>
+              <label class="choice"><input type="radio" name="system" value="electrical" aria-required="true"><span class="choice-dot" aria-hidden="true"></span>Electrical</label>
+            </div>
+            <p class="error" id="system-error"></p>
+          </fieldset>
+          <div class="fields">
+            <div class="field">
+              <label class="field-label" for="quantity">Quantity <span class="required" aria-hidden="true">*</span></label>
+              <input id="quantity" name="quantity" type="number" min="0.01" step="0.01" inputmode="decimal" aria-required="true" aria-describedby="quantity-error" placeholder="0">
+              <p class="error" id="quantity-error"></p>
+            </div>
+            <div class="field">
+              <label class="field-label" for="material">Material <span class="required" aria-hidden="true">*</span></label>
+              <input id="material" name="material" type="text" maxlength="60" autocomplete="off" aria-required="true" aria-describedby="material-error" placeholder="e.g. Carbon fiber">
+              <p class="error" id="material-error"></p>
+            </div>
+            <div class="field">
+              <label class="field-label" for="time">Workshop time (hours) <span class="required" aria-hidden="true">*</span></label>
+              <input id="time" name="time" type="number" min="0.01" step="0.1" inputmode="decimal" aria-required="true" aria-describedby="time-error" placeholder="0.0">
+              <p class="error" id="time-error"></p>
+            </div>
+            <div class="field">
+              <label class="field-label" for="cost">Cost (amount) <span class="required" aria-hidden="true">*</span></label>
+              <input id="cost" name="cost" type="number" min="0.01" step="0.01" inputmode="decimal" aria-required="true" aria-describedby="cost-error" placeholder="0.00">
+              <p class="error" id="cost-error"></p>
+            </div>
+          </div>
+          <div class="field full">
+            <label class="field-label" for="notes">Deeper information <span aria-hidden="true">(optional)</span></label>
+            <textarea id="notes" name="notes" maxlength="320" aria-describedby="notes-help" placeholder="Condition, replacement reason, setup notes, or other context."></textarea>
+            <p class="hint" id="notes-help">No information leaves this browser.</p>
+          </div>
+          <button class="save" type="submit">Save part record</button>
+          <p class="hint">Records use browser-only storage and remain on this device after a page refresh.</p>
+        </form>
+      </section>
+
+      <section class="dashboard" aria-labelledby="dashboard-title">
+        <h2 class="sr-only" id="dashboard-title">Parts log and resource summary</h2>
+        <div class="metrics" aria-label="Resource summary">
+          <article class="metric"><p class="metric-label">Saved parts</p><strong id="parts-total">0</strong><span>records logged</span></article>
+          <article class="metric"><p class="metric-label">Total quantity</p><strong id="quantity-total">0.00</strong><span>units recorded</span></article>
+          <article class="metric"><p class="metric-label">Workshop time</p><strong id="time-total">0.0</strong><span>hours recorded</span></article>
+          <article class="metric"><p class="metric-label">Cost total</p><strong id="cost-total">0.00</strong><span>amount recorded</span></article>
+        </div>
+        <section class="panel system-mix" aria-labelledby="mix-title">
+          <div><p class="label">Subsystem mix</p><h3 id="mix-title">Current allocation</h3><p>Live count of saved mechanical and electrical records.</p></div>
+          <div class="mix-ring is-empty" id="mix-ring"><div><strong id="mix-total">0</strong><span>records</span></div></div>
+          <div class="mix-list"><div class="mix-item mechanical"><span>Mechanical</span><b id="mechanical-total">0</b></div><div class="mix-item electrical"><span>Electrical</span><b id="electrical-total">0</b></div></div>
+        </section>
+        <section class="panel log" aria-labelledby="log-title">
+          <header class="log-heading">
+            <div><p class="label">Resource log</p><h2 id="log-title">Installed parts</h2></div>
+            <p class="count"><b id="record-total">0</b> saved records</p>
+          </header>
+          <div class="empty" id="empty-state">
+            <div><p class="empty-icon" aria-hidden="true">+</p><h3>Log the first part</h3><p>Use the form to create a complete mechanical or electrical record. Incomplete records stay out of this log.</p></div>
+          </div>
+          <div class="table-wrap" id="table-wrap" hidden>
+            <table>
+              <thead><tr><th scope="col">Part</th><th scope="col">System</th><th scope="col">Quantity</th><th scope="col">Material</th><th scope="col">Time</th><th scope="col">Cost</th></tr></thead>
+              <tbody id="parts-log"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </section>
+    <p class="sr-only" id="live-status" aria-live="polite"></p>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+      const storageKey = "parts-control-f1-v2";
+      const legacyKey = "parts-control-f1-v1";
+      const recoveryKey = "parts-control-f1-recovery-v2";
+      const form = document.getElementById("part-form");
+      const inputs = {
+        name: document.getElementById("part-name"),
+        system: [...document.querySelectorAll('input[name="system"]')],
+        quantity: document.getElementById("quantity"),
+        material: document.getElementById("material"),
+        time: document.getElementById("time"),
+        cost: document.getElementById("cost"),
+        notes: document.getElementById("notes")
+      };
+      const fields = ["name", "system", "quantity", "material", "time", "cost"];
+      const alertBox = document.getElementById("form-alert");
+      const live = document.getElementById("live-status");
+      const storageText = document.getElementById("save-state");
+      const storageDetail = document.getElementById("save-detail");
+      const storageDot = document.getElementById("save-dot");
+      const table = document.getElementById("parts-log");
+      const empty = document.getElementById("empty-state");
+      const tableWrap = document.getElementById("table-wrap");
+      const readinessText = document.getElementById("readiness-text");
+      const readinessSegments = [...document.querySelectorAll("#readiness-rail [data-check]")];
+      const mixRing = document.getElementById("mix-ring");
+
+      const validNumber = (value) => {
+        const number = Number(value);
+        return Number.isFinite(number) && number > 0 ? number : null;
+      };
+      const cleanText = (value, limit) => typeof value === "string" ? value.trim().slice(0, limit) : "";
+      const id = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      let loadNotice = "";
+      const storage = getBrowserStorage();
+      let records = storage ? loadRecords() : [];
+
+      function setStorageState(message, good, detail) {
+        storageText.textContent = message;
+        storageDetail.textContent = detail;
+        storageDot.style.background = good ? "var(--good)" : "var(--danger)";
+        storageDot.style.boxShadow = good ? "0 0 0 4px rgba(119, 229, 161, .11)" : "0 0 0 4px rgba(255, 138, 125, .13)";
+      }
+
+      function getBrowserStorage() {
+        try {
+          const candidate = window.localStorage;
+          const probe = `${storageKey}-probe`;
+          candidate.setItem(probe, "1");
+          if (candidate.getItem(probe) !== "1") throw new Error("Storage verification failed.");
+          candidate.removeItem(probe);
+          return candidate;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function normalise(record) {
+        const system = record && record.system;
+        const result = {
+          id: cleanText(record && record.id, 80) || id(),
+          name: cleanText(record && record.name, 80),
+          system,
+          quantity: validNumber(record && record.quantity),
+          material: cleanText(record && record.material, 60),
+          time: validNumber(record && record.time),
+          cost: validNumber(record && record.cost),
+          notes: cleanText(record && record.notes, 320)
+        };
+        return result.name && result.material && result.quantity && result.time && result.cost && ["mechanical", "electrical"].includes(system) ? result : null;
+      }
+
+      function parseRecords(raw) {
+        const parsed = JSON.parse(raw);
+        const savedRecords = Array.isArray(parsed) ? parsed : parsed && Array.isArray(parsed.records) ? parsed.records : null;
+        if (!savedRecords) throw new Error("Unexpected saved data.");
+        return savedRecords.map(normalise).filter(Boolean);
+      }
+
+      function preserveUnreadableData(raw) {
+        try {
+          if (storage) storage.setItem(recoveryKey, raw);
+        } catch (error) {
+          // The tracker can still accept new records when a recovery copy cannot be written.
+        }
+      }
+
+      function loadRecords() {
+        try {
+          const current = storage.getItem(storageKey);
+          const raw = current === null ? storage.getItem(legacyKey) : current;
+          if (raw === null) return [];
+          const restored = parseRecords(raw);
+          if (current === null && restored.length) loadNotice = "Older local records were restored and will move to the current store on your next save.";
+          return restored;
+        } catch (error) {
+          try {
+            const raw = storage.getItem(storageKey) ?? storage.getItem(legacyKey);
+            if (raw !== null) preserveUnreadableData(raw);
+          } catch (readError) {
+            // Storage access already failed; leave the tracker usable with an empty log.
+          }
+          loadNotice = "Saved data could not be read. New complete records can still be saved.";
+          return [];
+        }
+      }
+
+      function writeRecords(nextRecords, newRecordId) {
+        if (!storage) return false;
+        try {
+          const envelope = { version: 2, updatedAt: new Date().toISOString(), records: nextRecords };
+          storage.setItem(storageKey, JSON.stringify(envelope));
+          const verified = parseRecords(storage.getItem(storageKey) || "");
+          if (!verified.some((record) => record.id === newRecordId)) throw new Error("Saved record could not be verified.");
+          setStorageState("Saved on this device", true, "Verified for this browser and device");
+          requestPersistentStorage();
+          return true;
+        } catch (error) {
+          setStorageState("Browser storage blocked", false, "This browser cannot keep records after refresh");
+          return false;
+        }
+      }
+
+      async function requestPersistentStorage() {
+        try {
+          if (!navigator.storage || !navigator.storage.persist) return;
+          const alreadyProtected = navigator.storage.persisted ? await navigator.storage.persisted() : false;
+          const protectedStorage = alreadyProtected || await navigator.storage.persist();
+          if (protectedStorage) setStorageState("Saved on this device", true, "Protected browser storage on this device");
+        } catch (error) {
+          // Persistent-storage permission is optional; verified local storage remains the primary save path.
+        }
+      }
+
+      function number(value, places) {
+        return new Intl.NumberFormat(undefined, { minimumFractionDigits: places, maximumFractionDigits: places }).format(value);
+      }
+
+      function render() {
+        table.replaceChildren();
+        const totals = records.reduce((sum, record) => ({
+          quantity: sum.quantity + record.quantity,
+          time: sum.time + record.time,
+          cost: sum.cost + record.cost
+        }), { quantity: 0, time: 0, cost: 0 });
+        document.getElementById("parts-total").textContent = number(records.length, 0);
+        document.getElementById("record-total").textContent = number(records.length, 0);
+        document.getElementById("quantity-total").textContent = number(totals.quantity, 2);
+        document.getElementById("time-total").textContent = number(totals.time, 1);
+        document.getElementById("cost-total").textContent = number(totals.cost, 2);
+        const mechanicalTotal = records.filter((record) => record.system === "mechanical").length;
+        const electricalTotal = records.length - mechanicalTotal;
+        document.getElementById("mix-total").textContent = number(records.length, 0);
+        document.getElementById("mechanical-total").textContent = number(mechanicalTotal, 0);
+        document.getElementById("electrical-total").textContent = number(electricalTotal, 0);
+        mixRing.style.setProperty("--mechanical-share", records.length ? (mechanicalTotal / records.length) * 100 : 0);
+        mixRing.classList.toggle("is-empty", records.length === 0);
+        empty.hidden = records.length > 0;
+        tableWrap.hidden = records.length === 0;
+
+        [...records].reverse().forEach((record) => {
+          const row = document.createElement("tr");
+          const partCell = document.createElement("td");
+          const part = document.createElement("span");
+          part.className = "part";
+          part.textContent = record.name;
+          partCell.append(part);
+          if (record.notes) {
+            const notes = document.createElement("span");
+            notes.className = "notes";
+            notes.textContent = record.notes;
+            partCell.append(notes);
+          }
+          row.append(partCell);
+          const systemCell = document.createElement("td");
+          const chip = document.createElement("span");
+          chip.className = `chip ${record.system}`;
+          chip.textContent = record.system === "mechanical" ? "Mechanical" : "Electrical";
+          systemCell.append(chip);
+          row.append(systemCell);
+          [["quantity", number(record.quantity, 2)], ["", record.material], ["number", `${number(record.time, 1)} h`], ["number", number(record.cost, 2)]].forEach(([className, value]) => {
+            const cell = document.createElement("td");
+            cell.className = className;
+            cell.textContent = value;
+            row.append(cell);
+          });
+          table.append(row);
+        });
+      }
+
+      function clearErrors() {
+        alertBox.hidden = true;
+        alertBox.textContent = "";
+        fields.forEach((field) => {
+          document.getElementById(`${field}-error`).textContent = "";
+          const target = inputs[field];
+          (Array.isArray(target) ? target : [target]).forEach((input) => input.removeAttribute("aria-invalid"));
+        });
+      }
+
+      function showError(field, message) {
+        document.getElementById(`${field}-error`).textContent = message;
+        const target = inputs[field];
+        (Array.isArray(target) ? target : [target]).forEach((input) => input.setAttribute("aria-invalid", "true"));
+      }
+
+      function selectedSystem() {
+        const choice = inputs.system.find((input) => input.checked);
+        return choice ? choice.value : "";
+      }
+
+      function updateReadiness() {
+        const checks = {
+          name: Boolean(cleanText(inputs.name.value, 80)),
+          system: Boolean(selectedSystem()),
+          quantity: Boolean(validNumber(inputs.quantity.value)),
+          material: Boolean(cleanText(inputs.material.value, 60)),
+          time: Boolean(validNumber(inputs.time.value)),
+          cost: Boolean(validNumber(inputs.cost.value))
+        };
+        const readyCount = Object.values(checks).filter(Boolean).length;
+        readinessText.textContent = readyCount === fields.length ? "6 / 6 ready to save" : `${readyCount} / 6 ready`;
+        readinessSegments.forEach((segment) => segment.classList.toggle("is-ready", checks[segment.dataset.check]));
+      }
+
+      function validate() {
+        clearErrors();
+        const draft = normalise({
+          id: id(),
+          name: inputs.name.value,
+          system: selectedSystem(),
+          quantity: inputs.quantity.value,
+          material: inputs.material.value,
+          time: inputs.time.value,
+          cost: inputs.cost.value,
+          notes: inputs.notes.value
+        });
+        const messages = [];
+        if (!inputs.name.value.trim()) messages.push(["name", "Enter a part name."]);
+        if (!selectedSystem()) messages.push(["system", "Choose Mechanical or Electrical."]);
+        if (!validNumber(inputs.quantity.value)) messages.push(["quantity", "Enter a quantity greater than zero."]);
+        if (!inputs.material.value.trim()) messages.push(["material", "Enter the material."]);
+        if (!validNumber(inputs.time.value)) messages.push(["time", "Enter workshop time greater than zero."]);
+        if (!validNumber(inputs.cost.value)) messages.push(["cost", "Enter a cost greater than zero."]);
+        if (messages.length || !draft) {
+          messages.forEach(([field, message]) => showError(field, message));
+          alertBox.textContent = "This record is incomplete and was not saved. Fix the highlighted fields.";
+          alertBox.hidden = false;
+          const first = inputs[messages[0][0]];
+          (Array.isArray(first) ? first[0] : first).focus();
+          live.textContent = "The record was not saved because required information is missing.";
+          return null;
+        }
+        return draft;
+      }
+
+      function updateFormState() {
+        clearErrors();
+        updateReadiness();
+      }
+
+      form.addEventListener("input", updateFormState);
+      form.addEventListener("change", updateFormState);
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const record = validate();
+        if (!record) return;
+        const nextRecords = [...records, record];
+        if (!writeRecords(nextRecords, record.id)) {
+          alertBox.textContent = "Browser storage did not confirm this record, so it was not saved. Your entries are still here; use a browser that allows device storage and try again.";
+          alertBox.hidden = false;
+          live.textContent = "The record was not saved because browser storage is unavailable.";
+          return;
+        }
+        records = nextRecords;
+        render();
+        form.reset();
+        updateReadiness();
+        live.textContent = `${record.name} was saved and added to the resource log.`;
+      });
+
+      if (!storage) {
+        setStorageState("Browser storage blocked", false, "This preview cannot keep records after refresh");
+        live.textContent = "Browser storage is blocked, so records cannot be saved here.";
+      } else if (loadNotice) {
+        setStorageState("Local records restored", true, "Review the log, then save to update local storage");
+        live.textContent = loadNotice;
+      } else {
+        setStorageState("Browser storage ready", true, "Records persist after refresh on this device");
+      }
+      if (storage) {
+        window.addEventListener("storage", (event) => {
+          if (event.key !== storageKey) return;
+          try {
+            records = event.newValue === null ? [] : parseRecords(event.newValue);
+            render();
+            setStorageState("Local records updated", true, "Updated from another open tab");
+            live.textContent = "The resource log was updated from another open tab.";
+          } catch (error) {
+            setStorageState("Saved data needs review", false, "The latest browser data could not be read");
+          }
+        });
+      }
+      updateReadiness();
+      render();
+    })();
+  </script>
+</body>
 </html>
